@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        id="cordova-plugin-amazon-login"
-        version="3.0.0">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-plugin-amazon-login"
+    version="3.0.0">
     <name>Login with Amazon Plugin</name>
     <description>A Cordova Plugin for Login with Amazon. Use your Amazon account to authenticate with the app.</description>
     <license>MIT</license>
@@ -17,7 +17,7 @@
 
     <!-- android -->
     <platform name="android">
-        <config-file parent="/*" target="res/xml/config.xml" >
+        <config-file parent="/*" target="res/xml/config.xml">
             <feature name="AmazonLoginPlugin">
                 <param name="android-package" value="com.education.AmazonLoginPlugin"/>
                 <param name="onload" value="true"/>
@@ -31,9 +31,9 @@
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <activity android:name="com.amazon.identity.auth.device.workflow.WorkflowActivity"
-                      android:theme="@android:style/Theme.NoDisplay"
-                      android:allowTaskReparenting="true"
-                      android:launchMode="singleTask">
+                android:theme="@android:style/Theme.NoDisplay"
+                android:allowTaskReparenting="true"
+                android:launchMode="singleTask">
                 <intent-filter>
                     <action android:name="android.intent.action.VIEW"/>
                     <category android:name="android.intent.category.DEFAULT"/>
@@ -44,8 +44,9 @@
             </activity>
         </config-file>
 
+        <lib-file src="src/android/libs/login-with-amazon-sdk.jar"/>
         <source-file src="src/android/AmazonLoginPlugin.java" target-dir="src/com/education"/>
-        <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
+        <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference"/>
         <hook type="after_prepare" src="scripts/android/after_prepare.js"/>
     </platform>
 
@@ -57,7 +58,7 @@
             </feature>
             <plugin name="AmazonLoginPlugin" value="AmazonLoginPlugin"/>
             <access origin='*.amazon.com' allows-arbitrary-loads-in-media='true'
-                    allows-arbitrary-loads-in-web-content='true' allows-local-networking='true'/>
+                allows-arbitrary-loads-in-web-content='true' allows-local-networking='true'/>
         </config-file>
 
         <header-file src="src/ios/AmazonLoginPlugin.h"/>
