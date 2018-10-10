@@ -44,7 +44,7 @@
             </activity>
         </config-file>
 
-        <source-file src="src/android/libs/login-with-amazon-sdk.jar" target-dir="libs"/>
+        <source-file src="src/android/libs/login-with-amazon-sdk.jar" target-dir="app/libs"/>
         <source-file src="src/android/AmazonLoginPlugin.java" target-dir="src/com/education"/>
         <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference"/>
         <hook type="after_prepare" src="scripts/android/after_prepare.js"/>
