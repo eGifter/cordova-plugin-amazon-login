@@ -60,7 +60,7 @@ cordova plugin add https://github.com/edu-com/cordova-plugin-amazon-login.git#v2
 
 ### Authorize
 
-`window.AmazonLogin.authorize(Object options, Function success, Function failure)`
+`window.AmazonLoginPlugin.authorize(Object options, Function success, Function failure)`
 
 Success function returns an Object like:
 
@@ -104,4 +104,4 @@ Failure function returns an error String.
 
 ### SignOut
 
-`window.AmazonLogin.signOut(Function success, Function failure)`
+`window.AmazonLoginPlugin.signOut(Function success, Function failure)`
