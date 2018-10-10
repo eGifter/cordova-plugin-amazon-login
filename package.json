@@ -30,5 +30,8 @@
     "ecosystem:cordova",
     "cordova-android",
     "cordova-ios"
-  ]
+  ],
+  "dependencies": {
+    "fs-extra": "^7.0.0"
+  }
 }
