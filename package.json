@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-amazon-login",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "cordova": {
     "id": "cordova-plugin-amazon-login",
     "platforms": [
