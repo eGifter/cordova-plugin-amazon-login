@@ -2,12 +2,11 @@
 'use strict';
 var fs = require('fs-extra');
 
-var env = "Development";
-if (process.env.NODE_ENV) {
-  env = process.env.NODE_ENV;
+module.exports = function(context) {
+  const env = !!context.opts.options.release ? 'release' : 'debug';
+    
+    var configobj = JSON.parse(fs.readFileSync('config/project.json', 'utf8'));
+    
+    var filename = "platforms/android/app/src/main/assets/api_key.txt";
+    fs.writeFileSync(filename, configobj[env].AMAZON_API_KEY, 'utf8');
 }
-
-var configobj = JSON.parse(fs.readFileSync('config/project.json', 'utf8'));
-
-var filename = "platforms/android/app/src/main/assets/api_key.txt";
-fs.writeFileSync(filename, configobj[env].AMAZON_API_KEY, 'utf8');
