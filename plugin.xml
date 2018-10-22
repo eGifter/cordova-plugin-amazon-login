@@ -72,19 +72,6 @@
         <config-file target="*-Info.plist" parent="APIKey">
             <string>$IOS_API_KEY</string>
         </config-file>
-
-        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
-            <array>
-                <dict>
-                    <key>CFBundleURLName</key>
-                    <string>$PACKAGE_NAME</string>
-                    <key>CFBundleURLSchemes</key>
-                    <array>
-                        <string>amzn-$PACKAGE_NAME</string>
-                    </array>
-                </dict>
-            </array>
-        </config-file>
     </platform>
 
 </plugin>
