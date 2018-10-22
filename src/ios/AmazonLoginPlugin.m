@@ -1,19 +1,62 @@
 #import "AmazonLoginPlugin.h"
 #import "AppDelegate.h"
-
+#import <objc/runtime.h>
 #import <Cordova/CDVAvailability.h>
 #import <LoginWithAmazon/LoginWithAmazon.h>
 
+#pragma mark - AppDelegate Overrides
+
 @implementation AppDelegate (AmazonLogin)
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)
-            url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+// implemented swizzling approach from https://github.com/jeduan/cordova-plugin-facebook4
+    
+void AMZNMethodSwizzle(Class c, SEL originalSelector) {
+    NSString *selectorString = NSStringFromSelector(originalSelector);
+    SEL newSelector = NSSelectorFromString([@"swizzled_" stringByAppendingString:selectorString]);
+    SEL noopSelector = NSSelectorFromString([@"noop_" stringByAppendingString:selectorString]);
+    Method originalMethod, newMethod, noop;
+    originalMethod = class_getInstanceMethod(c, originalSelector);
+    newMethod = class_getInstanceMethod(c, newSelector);
+    noop = class_getInstanceMethod(c, noopSelector);
+    if (class_addMethod(c, originalSelector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
+        class_replaceMethod(c, newSelector, method_getImplementation(originalMethod) ?: method_getImplementation(noop), method_getTypeEncoding(originalMethod));
+    } else {
+        method_exchangeImplementations(originalMethod, newMethod);
+    }
+}
+    
++ (void)load
+{
+    AMZNMethodSwizzle([self class], @selector(application:openURL:sourceApplication:annotation:));
+}
+    
+// This method is a duplicate of the other openURL method below, except using the newer iOS (9) API.
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
+    if (!url) {
+        return NO;
+    }
 
-    // NSLog(@"AmazonLoginPlugin Plugin handle openURL");
-    return [AMZNAuthorizationManager handleOpenURL:url
-                                 sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
-
+    NSLog(@"AMZN handle url: %@", url);
+    return
+        [AMZNAuthorizationManager handleOpenURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]]
+        || [self swizzled_application:application openURL:url sourceApplication:[options valueForKey:@"UIApplicationOpenURLOptionsSourceApplicationKey"] annotation:0x0];
+}
+    
+- (BOOL)noop_application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return NO;
+}
+    
+- (BOOL)swizzled_application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if (!url) {
+        return NO;
+    }
+    
+    NSLog(@"AMZN handle url: %@", url);
+    return
+        [AMZNAuthorizationManager handleOpenURL:url sourceApplication:sourceApplication]
+        || [self swizzled_application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
 }
 
 @end
